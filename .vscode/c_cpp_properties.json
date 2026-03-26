@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "MinGW G++",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            // Update the compilerPath to where g++.exe now resides
+            "compilerPath": "C:/MinGW/bin/g++.exe", 
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            // Change the IntelliSense mode to match GNU/GCC
+            "intelliSenseMode": "windows-gcc-x64" 
+        }
+    ],
+    "version": 4
+}
