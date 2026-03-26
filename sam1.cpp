@@ -1,18 +1,27 @@
 // Input:-
 
-// 3
-// 3
-// 1 4 2
-// 4
-// 3 4 6 3
-// 10
-// 6 1 4 3 1 3 2 5 4 4
+// 6
+// 3 2 6
+// LLR
+// 2 -1 8
+// RL
+// 4 -2 5
+// LRRR
+// 5 3 7
+// LRRLL
+// 1 1 1
+// L
+// 3 -1 4846549234412827
+// RLR
 
 // Output:-
 
-// 0
 // 1
 // 4
+// 1
+// 0
+// 1
+// 2423274617206414
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -27,16 +36,27 @@ int main(){
     cin >> t;
 
     while(t--){
-        int n;
-        cin>>n;
-        vector<int> arr(n);
-        for(auto &x : arr) cin>>x;
-        int incPos = 0;
-        for(int i=1; i<n; i++){
-            if(arr[i] == arr[i-1] || arr[i] == 7-arr[i-1]) incPos++, i++;
+        ll n,x,k;
+        cin>>n>>x>>k;
+        string s;
+        cin>>s;
+        for(int i=0; i<n; i++){
+            x += (s[i] == 'L' ? -1 : 1);
+            k--;
+            if(!x) break;
         }
-
-        cout<<incPos<<endl;
+        ll res = 0;
+        if(!x){
+            res = 1;
+            for(int i=0; i<n; i++){
+                x += (s[i] == 'L' ? -1 : 1);
+                if(!x){
+                    res += k/(i+1);
+                    break;
+                }
+            }
+        }
+        cout<<res<<endl;
     }
     return 0;
 }
