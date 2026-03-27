@@ -1,27 +1,24 @@
 // Input:-
 
-// 6
-// 3 2 6
-// LLR
-// 2 -1 8
-// RL
-// 4 -2 5
-// LRRR
-// 5 3 7
-// LRRLL
-// 1 1 1
-// L
-// 3 -1 4846549234412827
-// RLR
+// 5
+// 5
+// 1 2 3 4 5
+// 4
+// 4 3 2 1
+// 4
+// 4 5 2 3
+// 8
+// 4 5 4 5 4 5 4 5
+// 9
+// 9 9 8 2 4 4 3 5 3
 
 // Output:-
 
-// 1
-// 4
-// 1
-// 0
-// 1
-// 2423274617206414
+// YES
+// NO
+// YES
+// YES
+// NO
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -36,27 +33,25 @@ int main(){
     cin >> t;
 
     while(t--){
-        ll n,x,k;
-        cin>>n>>x>>k;
-        string s;
-        cin>>s;
-        for(int i=0; i<n; i++){
-            x += (s[i] == 'L' ? -1 : 1);
-            k--;
-            if(!x) break;
-        }
-        ll res = 0;
-        if(!x){
-            res = 1;
-            for(int i=0; i<n; i++){
-                x += (s[i] == 'L' ? -1 : 1);
-                if(!x){
-                    res += k/(i+1);
-                    break;
-                }
+        ll n;
+        cin>>n;
+        vector<ll> arr(n),copy;
+        for(auto &x : arr) cin>>x;
+        for(int i=0; i<n-1; i++){
+            if(arr[i] > arr[i+1]){
+                arr[i] -= arr[i+1];
+                arr[i+1] = 0;
+            }
+            else{
+                arr[i+1] -= arr[i];
+                arr[i] = 0;
             }
         }
-        cout<<res<<endl;
+
+        copy = arr;
+        sort(copy.begin(), copy.end());
+        if(copy == arr) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
     }
     return 0;
 }
