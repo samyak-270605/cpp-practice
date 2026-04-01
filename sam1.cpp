@@ -1,21 +1,22 @@
 // Input:-
 
-// 6
-// 4 6
-// 10 14
-// 15 15
-// 7 12
-// 7000000000000000 10487275715782582
-// 1000000000000000000 1000000000000000000
+// 3
+// 3
+// 000
+// 2
+// 10
+// 3
+// 101
 
 // Output:-
 
 // Bob
-// Bob
 // Alice
+// 2
+// 1 2 
 // Alice
-// Bob
-// Alice
+// 2
+// 1 2 
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -30,10 +31,24 @@ int main(){
     cin >> t;
 
     while(t--){
-        ll p,q;
-        cin>>p>>q;
-        if(p < q && (min(p/2, q/2) >=  (q-p))) cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+        int n;
+        cin>>n;
+        string s;
+        cin>>s;
+        string temp = s;
+        sort(temp.begin(), temp.end());
+        if(temp == s) cout<<"Bob"<<endl;
+        else{
+            vector<int> m;
+            for(int i=0; i<n; i++){
+                if(s[i] != temp[i]) m.push_back(i+1);
+            }
+
+            cout<<"Alice"<<endl;
+            cout<<m.size()<<endl;
+            for(int it : m) cout<<it<< " ";
+            cout<<endl;
+        }
     }
     return 0;
 }
