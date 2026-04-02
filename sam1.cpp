@@ -1,22 +1,32 @@
 // Input:-
 
-// 3
-// 3
-// 000
-// 2
-// 10
-// 3
-// 101
+// 6
+// 1 1
+// 3 3 3
+// 1 7
+// 4 2 5
+// 2 4
+// 1 2 3
+// 2 2 4
+// 5 8
+// 12 1 11
+// 10 1 4
+// 1 1 3
+// 1 2 5
+// 2 1 7
+// 1 1000000000000000000
+// 1000000 4 654321
+// 1 10
+// 2 2 1
 
 // Output:-
 
-// Bob
-// Alice
+// 0
+// 1
+// -1
 // 2
-// 1 2 
-// Alice
-// 2
-// 1 2 
+// 298892990032
+// 3
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -31,24 +41,23 @@ int main(){
     cin >> t;
 
     while(t--){
-        int n;
-        cin>>n;
-        string s;
-        cin>>s;
-        string temp = s;
-        sort(temp.begin(), temp.end());
-        if(temp == s) cout<<"Bob"<<endl;
-        else{
-            vector<int> m;
-            for(int i=0; i<n; i++){
-                if(s[i] != temp[i]) m.push_back(i+1);
+            ll n,x;
+            cin>>n>>x;
+            vector<ll> a(n),b(n),c(n);
+            for(ll i=0; i<n; i++) cin>>a[i]>>b[i]>>c[i];
+
+            ll start = 0;
+            ll mx = LLONG_MIN;
+            for(ll i=0; i<n; i++){
+                mx = max(mx,a[i] * b[i] - c[i]);
+                start += a[i] * (b[i] - 1);
             }
 
-            cout<<"Alice"<<endl;
-            cout<<m.size()<<endl;
-            for(int it : m) cout<<it<< " ";
-            cout<<endl;
+            x -= start;
+            if(x <= 0) cout<<0;
+            else if(mx <= 0) cout<<-1;
+            else cout<<(x + mx - 1) / mx;
+            cout<<'\n';
         }
-    }
     return 0;
 }
