@@ -1,42 +1,30 @@
 // Input:-
 
 // 7
-// 1 1
-// 2 1
-// 0 3
-// 3 4
-// 0 2
-// 1 0
-// 4 7
+// 4 3
+// 0 1 2 0
+// 8 4
+// 0 1 2 3 1 2 0 1
+// 9 5
+// 1 0 1 3 4 3 2 1 0
+// 15 14
+// 3 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+// 5 5
+// 4 3 0 1 2
+// 5 2
+// 0 1 1 1 0
+// 3 2
+// 0 1 1
 
 // Output:-
 
-// YES
-// 1 2
-// NO
-// YES
-// 1 2
-// 1 3
-// YES
-// 1 2
-// 2 3
-// 3 4
-// 4 5
-// 5 6
-// 6 7
-// NO
-// NO
-// YES
-// 1 2
-// 2 3
-// 3 4
-// 4 5
-// 4 11
-// 2 6
-// 6 7
-// 7 8
-// 2 9
-// 9 10
+// 2
+// 0
+// 1920
+// 138007136
+// 8
+// 0
+// 0
 
 
 #include<bits/stdc++.h>
@@ -51,27 +39,41 @@ int main(){
     cin >> t;
     
     while(t--){
-        int x,y;
-        cin>>x>>y;
-        
-        int n = x + y;
-        int d = y - x;
+        ll n,m;
+        cin>>n>>m;
+        vector<ll> b(n);
+        for(auto &x : b) cin>>x;
+        ll mod = 676767677;
 
-        if((x == 0 && n%2 == 0) || n/2 < x){
-            cout<<"NO"<<endl;
-            continue;
+        map<ll,ll> f,fq;
+        for(ll i : b) f[i]++;
+
+        ll sum = 0;
+        for(ll i=0; i<m; i++){
+            sum += f[i];
+            fq[i+1] = sum;
         }
 
-        cout<<"YES"<<endl;
+        ll ans = 1;
+        for(ll i=0; i<n; i++){
+            if(b[i] == 0) continue;
+            ll mn = INT_MAX;
+            if(i-1 >=0) mn = min(mn,b[i-1]);
+            if(i+1 < n) mn = min(mn,b[i+1]);
+            
+            if(mn >= b[i]){
+                ans = 0;
+                break;
+            }
 
-        int endNode = 2*x + (d % 2);
-        for(int i=2; i<=endNode; i++){
-            cout<<i-1<<" "<<i<<endl;
+            if(mn == b[i]-1)
+                ans = ans * fq[b[i]]%mod;
+            else
+                ans = ans * f[b[i]-1]%mod;
         }
 
-        for(int i=endNode+1; i<=n; i++){
-            cout<<endNode<<" "<<i<<endl;
-        }
+        if(ans == 0) cout<<0<<endl;
+        else cout<<ans<<endl;
     }
     return 0;
 }
