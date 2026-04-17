@@ -1,20 +1,19 @@
-// InputCopy
+// Input:-
+
 // 4
-// 7
-// 1 2 3 4 5 6 7
-// 1 2 3 4 5 6 7
-// 3
-// 67 67 67
-// 67 67 67
-// 6
-// 8 10 10 12 12 14
-// 8 10 10 12 12 14
-// 8
-// 2 4 8 16 32 64 128 256
-// 2 4 8 16 32 64 128 256
-// OutputCopy
-// 6
+// 2 1 2 42
+// 42 1
+// 3 3 2 6
+// 2 1 2
+// 3 2 2 6
+// 2 1 2
+// 8 4 7 10
+// 3 4 4 2 1 1 4 2
+
+// Output:-
+
 // 0
+// 6
 // 2
 // 1
 
@@ -32,23 +31,46 @@ int main(){
     cin >> t;
     
     while(t--){
-        ll n;
-        cin>>n;
-        vector<ll> arr(n),b(n);
-        for(auto &x : arr) cin>>x;
-        for(auto &x : b) cin>>x;
-        ll res = 0;
-
-        for(ll i=1; i<n-1; i++){
-           ll a = __gcd(arr[i], arr[i-1]);
-           ll c = __gcd(arr[i], arr[i+1]);
-           ll lcm = (a * c)/__gcd(a,c);
-           if(lcm < arr[i]) res++;
+        int n,k,p,m;
+        cin>>n>>k>>p>>m;
+        vector<int> arr(n+1);
+        for(int i=1; i<=n; i++) cin>>arr[i];
+        int res = 0;
+        if(p <= k){
+            if(m < arr[p]){
+                cout<<res<<endl;
+                continue;
+            }
+            else{
+                m -= arr[p];
+                res++;
+            }
         }
-        
-            if(__gcd(arr[0], arr[1]) < arr[0]) res++;
-            if(__gcd(arr[n-1], arr[n-2]) < arr[n-1]) res++;
-        
+        else{
+            vector<int> temp;
+            for(int i=1; i<p; i++) temp.push_back(arr[i]);
+            sort(temp.rbegin(), temp.rend());
+            for(int i=k-1; i<temp.size(); i++) m -= temp[i];
+            m -= arr[p];
+            if(m < 0){
+                cout<<res<<endl;
+                continue;
+            }
+            else res++;
+        }
+
+        vector<int> sorted;
+        for(int i=1; i<=n; i++){
+            if(i == p) continue;
+            sorted.push_back(arr[i]);
+        }
+
+        sort(sorted.rbegin(), sorted.rend());
+        int req = 0;
+        for(int i=k-1; i<n-1; i++) req += sorted[i];
+        req += arr[p];
+
+        res += m / req;
         cout<<res<<endl;
     }
 
