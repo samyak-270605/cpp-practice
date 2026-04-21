@@ -1,59 +1,23 @@
 // Input:-
 
-// 3
-// dcbe
-// bedbaecfc
-// babadab
-// abacabadabacaba
-// babaisyou
-// flagiswin
+// 5
+// 5 5
+// 8 1
+// 15 8
+// 10 10
+// 5989566119 1996588700
 
 // Output:-
 
-// abcdcbeef
-// aaaaabababccdab
-// Impossible
-
+// 1
+// 2
+// 10
+// 0
+// 99996
 
 #include<bits/stdc++.h>
 using namespace std;
-using ll = long long;
-
-void solve(string s, string t){
-    vector<int> alpha(26,0);
-    for(auto ch : t) alpha[ch - 'a']++;
-    for(auto ch : s){
-        if(alpha[ch - 'a'] == 0){
-            cout<<"Impossible"<<endl;
-            return;
-        }
-        alpha[ch - 'a']--;
-    }
-
-    string temp = "";
-    //int start = 0;
-    for(auto ch : s){
-        int end = ch - 'a';
-        for(int i=0; i<end; i++){
-            while(alpha[i]){
-                temp += 'a' + i;
-                alpha[i]--;
-            }
-        }
-        temp += ch;
-        //start = end + 1;
-    }
-
-    for(int i=0; i<26; i++){
-        while(alpha[i]){
-            temp += 'a' + i;
-            alpha[i]--;
-        }
-    }
-
-    cout<<temp<<endl;
-    return;
-}
+using ll = long long; 
 
 int main(){
     ios::sync_with_stdio(false);
@@ -63,10 +27,13 @@ int main(){
     cin >> t;
     
     while(t--){
-        string s,t;
-        cin>>s;
-        cin>>t;
-        solve(s,t);
+        ll n,x;
+        cin>>n>>x;
+        ll mod = 998244353;
+        vector<ll> arr(n);
+        iota(arr.begin(), arr.end(), 1);
+        vector<vector<ll>> dp(n, vector<ll>(n,0));
+        
     }
 
     return 0;
