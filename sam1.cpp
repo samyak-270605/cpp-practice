@@ -1,64 +1,55 @@
 // Input:-
 
-// 5
-// 5 5
-// 8 1
-// 15 8
-// 10 10
-// 5989566119 1996588700
+// 3
+// 12 1 2
+// 123 1 2
+// 123 2 5
 
 // Output:-
 
-// 1
-// 2
-// 10
-// 0
-// 99996
+// 0A2B
+// 1A2B
+// 1A2B
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
-// Function to count how many times P(k) = 0 occurs in range [0, K]
-// Pattern: 0, 3, 7, 11, 15...
-ll count_Z(ll K) {
-    if (K < 0) return 0;
-    if (K < 3) return 1; // Only index 0
-    return 2 + (K - 3) / 4; 
-}
-
-// Function to count how many times P(k) = 1 occurs in range [0, K]
-// Pattern: 1, 5, 9, 13, 17...
-ll count_O(ll K) {
-    if (K < 1) return 0;
-    return 1 + (K - 1) / 4;
-}
-
 void solve() {
-    ll n, x;
-    cin >> n >> x;
-    ll mod = 998244353;
+    string n_str;
+    int j, k;
+    cin >> n_str >> j >> k;
 
-    // 1. Calculate combinations for matching '0's
-    ll z_left = count_Z(x - 1);           // Valid L-1 options
-    ll z_total = count_Z(n);
-    ll z_right = z_total - z_left;        // Valid R options
-    
-    // 2. Calculate combinations for matching '1's
-    ll o_left = count_O(x - 1);           // Valid L-1 options
-    ll o_total = count_O(n);
-    ll o_right = o_total - o_left;        // Valid R options
+    // Get the j-th permutation
+    string s1 = n_str;
+    sort(s1.begin(), s1.end()); // Start from the smallest
+    for(int i = 1; i < j; i++) next_permutation(s1.begin(), s1.end());
 
-    // Modulo arithmetic to avoid overflow
-    z_left %= mod; z_right %= mod;
-    o_left %= mod; o_right %= mod;
+    // Get the k-th permutation
+    string s2 = n_str;
+    sort(s2.begin(), s2.end());
+    for(int i = 1; i < k; i++) next_permutation(s2.begin(), s2.end());
 
-    ll ans_z = (z_left * z_right) % mod;
-    ll ans_o = (o_left * o_right) % mod;
+    int a = 0, b = 0;
+    //vector<int> count1(10, 0), count2(10, 0);
 
-    // Total valid subarrays
-    ll ans = (ans_z + ans_o) % mod;
-    cout << ans << "\n";
+    for(int i = 0; i < s1.size(); i++) {
+        if(s1[i] == s2[i]) {
+            a++;
+        } else {
+            // Store counts for digits that don't match for "B" calculation
+            // count1[s1[i] - '0']++;
+            // count2[s2[i] - '0']++;
+            b++;
+        }
+    }
+
+    // "B" is the number of digits present in both but not at the same index
+    // for(int i = 0; i < 10; i++) {
+    //     b += min(count1[i], count2[i]);
+    // }
+
+    cout << a << "A" << b << "B" << endl;
 }
 
 int main(){
