@@ -1,55 +1,95 @@
 // Input:-
 
-// 3
-// 12 1 2
-// 123 1 2
-// 123 2 5
+// 7
+// 10 2
+// 1 2 1 2 1 2 1 2 1 2
+// 5 10
+// 2 2 2 2 5
+// 11 23
+// 5 5 22 1 21 2 10 3 1 1 2
+// 1 1
+// 1
+// 1 17
+// 11
+// 3 100
+// 44 32 1
+// 16 100500
+// 42801 73112 95296 68791 42217 21871 29316 84405 24273 42894 63370 53473 57156 61369 80 27290
 
 // Output:-
 
-// 0A2B
-// 1A2B
-// 1A2B
+// 12
+// 1 2 2 2 2 2 1 1 1 1
+// 5
+// 2 2 2 2 5
+// 53
+// 1 1 5 2 1 2 5 3 10 21 22
+// 1
+// 1
+// 0
+// 11
+// 0
+// 44 32 1
+// 503499
+// 53473 42894 80 57156 42801 61369 42217 63370 29316 68791 27290 73112 24273 84405 21871 95296
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
 void solve() {
-    string n_str;
-    int j, k;
-    cin >> n_str >> j >> k;
+    ll n,X;
+    cin>>n>>X;
+    
+    multiset<ll> st;
+    for(int i = 0; i < n; i++){
+        ll x; cin >> x;
+        st.insert(x);
+    }
 
-    // Get the j-th permutation
-    string s1 = n_str;
-    sort(s1.begin(), s1.end()); // Start from the smallest
-    for(int i = 1; i < j; i++) next_permutation(s1.begin(), s1.end());
+    ll S = 0;
+    ll bonus = 0;
+    vector<ll> res;
 
-    // Get the k-th permutation
-    string s2 = n_str;
-    sort(s2.begin(), s2.end());
-    for(int i = 1; i < k; i++) next_permutation(s2.begin(), s2.end());
+    ll next = X;
 
-    int a = 0, b = 0;
-    //vector<int> count1(10, 0), count2(10, 0);
+    while(!st.empty()){
 
-    for(int i = 0; i < s1.size(); i++) {
-        if(s1[i] == s2[i]) {
-            a++;
-        } else {
-            // Store counts for digits that don't match for "B" calculation
-            // count1[s1[i] - '0']++;
-            // count2[s2[i] - '0']++;
-            b++;
+        ll need = next - S;
+
+        // check if ANY element can cross
+        auto it = st.lower_bound(need);
+
+        if(it != st.end()){
+            // choose LARGEST element instead
+            auto it2 = prev(st.end());
+
+            ll val = *it2;
+
+            res.push_back(val);
+            bonus += val;
+            S += val;
+
+            st.erase(it2);
+
+            next += X;
+        }
+        else{
+            // build sum with smallest
+            auto it2 = st.begin();
+
+            ll val = *it2;
+
+            res.push_back(val);
+            S += val;
+
+            st.erase(it2);
         }
     }
 
-    // "B" is the number of digits present in both but not at the same index
-    // for(int i = 0; i < 10; i++) {
-    //     b += min(count1[i], count2[i]);
-    // }
-
-    cout << a << "A" << b << "B" << endl;
+    cout << bonus << "\n";
+    for(ll v : res) cout << v << " ";
+    cout << "\n";
 }
 
 int main(){
