@@ -1,38 +1,63 @@
 // Input:-
 
-// 3
-// 5
-// 1 2 1 2 3
-// 3
-// 3 2 1
+// 6
 // 4
-// 1 1 1 1
+// 1 2 0 3 3 0 2 1
+// 2
+// 0 1 0 1
+// 2
+// 1 1 0 0
+// 3
+// 2 0 2 1 1 0
+// 4
+// 0 1 3 0 3 1 2 2
+// 3
+// 0 1 2 1 0 2
 
 // Output:-
 
-// 7
-// 6
+// 4
+// 2
 // 1
+// 1
+// 2
+// 3
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
-void solve() {
-    ll mod = 676767677;
-    ll n;
-    cin>>n;
-    vector<ll> arr(n);
-    ll sum = 0;
-    for(ll i=0; i<n; i++){
-        ll el;
-        cin>>el;
-        arr[i] = el;
-        if(el != 1) sum += el;
+
+void findRes(unordered_set<int>& st, int n, int& mex){
+    int i = 0;
+    while(st.count(i)) i++;
+    mex = max(mex, i);
+}
+
+void find(vector<int>& arr, int left, int right, int n, int& mex){
+    unordered_set<int> st;
+    while(left >= 0 && right < n && arr[left] == arr[right]){
+        st.insert(arr[left]);
+        left--;
+        right++;
     }
 
-    if(arr[n-1] == 1) sum++;
-    cout<<sum % mod<<endl;
+    if(st.size() >= 2) findRes(st,n, mex);
+    st.clear();
+}
+
+void solve() {
+    int n;
+    cin>>n;
+    vector<int> arr(2*n);
+    int mex = 1;
+    for(auto &x : arr) cin>>x;
+    for(int i=0; i<2*n; i++){
+            find(arr, i,i, 2*n, mex);
+            if(i > 0 && arr[i] == arr[i-1]) find(arr, i-1, i, 2*n, mex);
+    }
+
+    cout<<mex<<endl;
 }
 
 int main(){
