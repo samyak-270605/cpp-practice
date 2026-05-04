@@ -1,63 +1,59 @@
 // Input:-
 
+// 5
+// 5
+// 1 2 3 2 1
+// 7
+// 5 4 1 1 1 1 3
 // 6
-// 4
-// 1 2 0 3 3 0 2 1
-// 2
-// 0 1 0 1
-// 2
-// 1 1 0 0
-// 3
-// 2 0 2 1 1 0
-// 4
-// 0 1 3 0 3 1 2 2
-// 3
-// 0 1 2 1 0 2
+// 1 2 3 4 5 6
+// 6
+// 4 1 6 3 2 6
+// 7
+// 1 3 2 7 2 3 1
 
 // Output:-
 
-// 4
-// 2
-// 1
-// 1
-// 2
-// 3
+// 8
+// 12
+// 0
+// 10
+// 18
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
-
-void findRes(unordered_set<int>& st, int n, int& mex){
-    int i = 0;
-    while(st.count(i)) i++;
-    mex = max(mex, i);
-}
-
-void find(vector<int>& arr, int left, int right, int n, int& mex){
-    unordered_set<int> st;
-    while(left >= 0 && right < n && arr[left] == arr[right]){
-        st.insert(arr[left]);
-        left--;
-        right++;
-    }
-
-    if(st.size() >= 2) findRes(st,n, mex);
-    st.clear();
-}
-
 void solve() {
     int n;
     cin>>n;
-    vector<int> arr(2*n);
-    int mex = 1;
-    for(auto &x : arr) cin>>x;
-    for(int i=0; i<2*n; i++){
-            find(arr, i,i, 2*n, mex);
-            if(i > 0 && arr[i] == arr[i-1]) find(arr, i-1, i, 2*n, mex);
+    vector<int> arr(n);
+    ll sum = 0;
+    for(auto &x : arr){
+        cin>>x;
+        sum += x;
     }
 
-    cout<<mex<<endl;
+    vector<int> suf_mn(n);
+    suf_mn[n-1] = arr[n-1];
+    sum -= suf_mn[n-1];
+
+    for(int i=n-2; i>=0; i--){
+        suf_mn[i] = min(suf_mn[i+1], arr[i]);
+        sum -= suf_mn[i];
+    }
+
+    ll mx = -1, cur = 1;
+        for(int i = 1; i < n; i++) {
+            if(suf_mn[i] == suf_mn[i - 1]) cur++;
+            else {
+                mx = max(mx, cur);
+                cur = 1;
+            }
+        }
+
+        mx = max(mx, cur);
+        cout << sum + mx - 1 << endl;
 }
 
 int main(){
