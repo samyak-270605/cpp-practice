@@ -1,59 +1,52 @@
 // Input:-
 
 // 5
-// 5
-// 1 2 3 2 1
-// 7
-// 5 4 1 1 1 1 3
-// 6
-// 1 2 3 4 5 6
-// 6
-// 4 1 6 3 2 6
-// 7
-// 1 3 2 7 2 3 1
+// 1 1 1
+// 2 0 0
+// 1 1 0
+// 0 0 1000000000
+// 1000000000 1000000000 1000000000
 
 // Output:-
 
-// 8
-// 12
-// 0
-// 10
-// 18
+// 7
+// 5
+// 5
+// 3000000000
+// 7000000000
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
 void solve() {
-    int n;
-    cin>>n;
-    vector<int> arr(n);
-    ll sum = 0;
-    for(auto &x : arr){
-        cin>>x;
-        sum += x;
-    }
-
-    vector<int> suf_mn(n);
-    suf_mn[n-1] = arr[n-1];
-    sum -= suf_mn[n-1];
-
-    for(int i=n-2; i>=0; i--){
-        suf_mn[i] = min(suf_mn[i+1], arr[i]);
-        sum -= suf_mn[i];
-    }
-
-    ll mx = -1, cur = 1;
-        for(int i = 1; i < n; i++) {
-            if(suf_mn[i] == suf_mn[i - 1]) cur++;
-            else {
-                mx = max(mx, cur);
-                cur = 1;
-            }
+    ll t,h,u;
+    cin>>t>>h>>u;
+    ll res = 0;
+    
+    // 1. Greedily pair T and U (most efficient combination)
+    ll pairs = min(t, u);
+    res += pairs * 4;
+    t -= pairs;
+    u -= pairs;
+    
+    // 2. Process whatever is left
+    if (u > 0) {
+        // U's cannot interlock with H's. Both just take 3 rows each.
+        res += u * 3;
+        res += h * 3;
+    } else {
+        // We only have T's and H's left
+        if (t <= 2 * h) {
+            // All T's can interlock into the H's (no overhead)
+            res += 2 * t + 3 * h;
+        } else {
+            // We have more T's than H gaps, triggering a T-chain overhead (+1)
+            res += 2 * t + 3 * h + 1;
         }
+    }
 
-        mx = max(mx, cur);
-        cout << sum + mx - 1 << endl;
+    cout<<res<<endl;
 }
 
 int main(){
