@@ -1,27 +1,23 @@
-// 2217C
+// 2211C1
 // Input:-
 
-// 10
-// 1 1 1 1
-// 2 2 1 1
-// 4 2 2 1
-// 6 9 6 7
-// 67 42 42 67
-// 3411 4134 32 23
-// 90234 143124 232 323
-// 69387963 98793214 9791 4324786
-// 985865 578977 899368 447605
-// 1000000000 1000000000 1000000000 1000000000
+// 4
+// 5 5
+// 1 2 3 4 5
+// 3 1 5 2 4
+// 5 4
+// 4 1 2 5 3
+// 2 -1 -1 -1 -1
+// 6 4
+// 1 2 4 3 5 6
+// -1 -1 3 -1 -1 -1
+// 6 4
+// 1 2 4 3 5 6
+// -1 -1 3 3 -1 -1
 
 // Output:-
 
 // YES
-// YES
-// NO
-// NO
-// YES
-// NO
-// NO
 // NO
 // YES
 // NO
@@ -31,12 +27,49 @@ using namespace std;
 using ll = long long;
 
 void solve() {
-    ll n,m,a,b;
-    cin>>n>>m>>a>>b;
-    if(__gcd(n,a) == 1 && __gcd(m,b) == 1 && __gcd(n,m) <= 2)
-        cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
+    int n,k;
+    cin>>n>>k;
+    
+    vector<int> a(n + 1);
+    vector<int> mpp(n + 1, 0);
+    for(int i = 1; i <= n; i++){
+        cin >> a[i];
+        mpp[a[i]] = i;
+    }
+
+    vector<int> b(n + 1);
+    for(int i = 1; i <= n; i++){
+        cin >> b[i];
+    }
+
+    vector<int> test(n + 1, 0); 
+    
+    for(int i = 1; i <= n; i++){
+        int el = b[i];
+        if(el != -1) {
+            if(test[el] != 0){
+                cout << "NO"<<endl;
+                return;
+            }
+            test[el] = i;
+        }
+    }
+
+    int L = n - k;
+    for(int i=1; i<=n; i++){
+        if(test[i] == 0) continue;
+        int b = i;
+        int idxB = test[i];
+        int idxA = mpp[b];
+        if(idxA == idxB) continue;
+
+        if(idxA <= L || idxA > k || idxB <= L || idxB > k){
+            cout<<"NO"<<endl;
+            return;
+        }
+    }
+
+    cout<<"YES"<<endl;
 }
 
 int main(){
