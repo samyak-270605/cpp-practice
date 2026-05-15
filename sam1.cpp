@@ -1,75 +1,41 @@
-// 2211C1
+//2208C
 // Input:-
 
-// 4
-// 5 5
-// 1 2 3 4 5
-// 3 1 5 2 4
-// 5 4
-// 4 1 2 5 3
-// 2 -1 -1 -1 -1
-// 6 4
-// 1 2 4 3 5 6
-// -1 -1 3 -1 -1 -1
-// 6 4
-// 1 2 4 3 5 6
-// -1 -1 3 3 -1 -1
+// 2
+// 2
+// 10 0
+// 20 5
+// 3
+// 10 5
+// 10 80
+// 20 5
 
 // Output:-
 
-// YES
-// NO
-// YES
-// NO
+// 30.0000000000
+// 29.0000000000
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
 void solve() {
-    int n,k;
-    cin>>n>>k;
+    int n;
+    cin >> n;
+
+    vector<int> c(n), p(n);
+
+    for(int i=0;i<n;i++)
+        cin >> c[i] >> p[i];
+
+    vector<double> dp (n+1,0.0);
+    for(int i=n-1; i>=0; i--){
+        double skip = dp[i+1];
+        double take = c[i] + (1.0 - p[i]/100.0)*dp[i+1];
+        dp[i] = max(skip,take);
+    }
     
-    vector<int> a(n + 1);
-    vector<int> mpp(n + 1, 0);
-    for(int i = 1; i <= n; i++){
-        cin >> a[i];
-        mpp[a[i]] = i;
-    }
-
-    vector<int> b(n + 1);
-    for(int i = 1; i <= n; i++){
-        cin >> b[i];
-    }
-
-    vector<int> test(n + 1, 0); 
-    
-    for(int i = 1; i <= n; i++){
-        int el = b[i];
-        if(el != -1) {
-            if(test[el] != 0){
-                cout << "NO"<<endl;
-                return;
-            }
-            test[el] = i;
-        }
-    }
-
-    int L = n - k;
-    for(int i=1; i<=n; i++){
-        if(test[i] == 0) continue;
-        int b = i;
-        int idxB = test[i];
-        int idxA = mpp[b];
-        if(idxA == idxB) continue;
-
-        if(idxA <= L || idxA > k || idxB <= L || idxB > k){
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-
-    cout<<"YES"<<endl;
+    cout<< fixed << setprecision(10) << dp[0] <<endl;
 }
 
 int main(){
