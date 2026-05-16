@@ -1,44 +1,51 @@
-// 2206K
+//2201A1
 // Input:-
 
-// 4
-// 10
-// 0123456789
-// 11
-// 00123456789
-// 8
-// 99111111
-// 4
-// 1234
+// 5
+// 5
+// 1 2 3 4 5
+// 5
+// 1 3 5 7 9
+// 5
+// 1 2 5 6 5
+// 7
+// 1 2 4 5 3 7 8
+// 9
+// 9 8 9 2 3 4 4 5 3
 
 // Output:-
 
 // 1
-// 2
-// 2
-// 0
+// 5
+// 3
+// 4
+// 3
 
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 
 void solve() {
-    int n;
-    cin >> n;
-    string s;
-    cin>>s;
-    
-    vector<int> freq(10,0);
-    for(char ch : s) freq[ch - '0']++;
+    ll n;
+    cin>>n;
+    ll res = 0;
+    ll root = -1;
+    ll top = -1;
 
-    int s5 = 0;
-    for(int i=0; i<=5; i++) s5 += freq[i];
-    int max_k = n/4;
-    max_k = min(max_k, s5 / 2);
-    max_k = min(max_k, freq[0] + freq[1] / 2);
-    max_k = min(max_k, (s5 + freq[0]) / 3);
+    for(auto i=0; i<n; i++){
+        ll y;
+        cin>>y;
+        if(root <= y-1 && y-1 <= top){
+            top = y;
+        }
+        else{
+            root = y;
+            top = y;
+            res++;
+        }
+    }
 
-    cout<<max_k<<endl;
+    cout<<res<<endl;
 }
 
 int main(){
