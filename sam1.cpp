@@ -1,19 +1,22 @@
-//2208C
+// 2206K
 // Input:-
 
-// 2
-// 2
-// 10 0
-// 20 5
-// 3
-// 10 5
-// 10 80
-// 20 5
+// 4
+// 10
+// 0123456789
+// 11
+// 00123456789
+// 8
+// 99111111
+// 4
+// 1234
 
 // Output:-
 
-// 30.0000000000
-// 29.0000000000
+// 1
+// 2
+// 2
+// 0
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -22,20 +25,20 @@ using ll = long long;
 void solve() {
     int n;
     cin >> n;
-
-    vector<int> c(n), p(n);
-
-    for(int i=0;i<n;i++)
-        cin >> c[i] >> p[i];
-
-    vector<double> dp (n+1,0.0);
-    for(int i=n-1; i>=0; i--){
-        double skip = dp[i+1];
-        double take = c[i] + (1.0 - p[i]/100.0)*dp[i+1];
-        dp[i] = max(skip,take);
-    }
+    string s;
+    cin>>s;
     
-    cout<< fixed << setprecision(10) << dp[0] <<endl;
+    vector<int> freq(10,0);
+    for(char ch : s) freq[ch - '0']++;
+
+    int s5 = 0;
+    for(int i=0; i<=5; i++) s5 += freq[i];
+    int max_k = n/4;
+    max_k = min(max_k, s5 / 2);
+    max_k = min(max_k, freq[0] + freq[1] / 2);
+    max_k = min(max_k, (s5 + freq[0]) / 3);
+
+    cout<<max_k<<endl;
 }
 
 int main(){
