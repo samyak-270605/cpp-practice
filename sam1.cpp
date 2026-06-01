@@ -1,25 +1,43 @@
-//2201A1
+// 2230C
 // Input:-
 
-// 5
-// 5
-// 1 2 3 4 5
-// 5
-// 1 3 5 7 9
-// 5
-// 1 2 5 6 5
-// 7
-// 1 2 4 5 3 7 8
+// 11
+// 4
+// 1 1 1 3
+// 3
+// 2 3 4
+// 6
+// 1 1 1 1 3 4
+// 3
+// 1000000000 1000000000 1000000000
+// 3
+// 1 1 2
+// 1
+// 2
+// 2
+// 2 2
+// 3
+// 1 1 1
+// 4
+// 1 1 2 2
+// 3
+// 1 1 4
 // 9
-// 9 8 9 2 3 4 4 5 3
+// 1 1 1 1 1 1 1 1 7
 
 // Output:-
 
-// 1
-// 5
-// 3
 // 4
+// 9
+// 8
+// 3000000000
 // 3
+// 0
+// 4
+// 0
+// 4
+// 6
+// 10
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -28,24 +46,36 @@ using ll = long long;
 void solve() {
     ll n;
     cin>>n;
-    ll res = 0;
-    ll root = -1;
-    ll top = -1;
+    vector<ll> arr(n);
+    for(auto& x : arr) cin>>x;
+    sort(arr.rbegin(), arr.rend());
+    ll ex = 0;
+    bool exx = false;
+    if(n > 1 && arr[1] == 1 && arr[0] >= 2) exx = true;
 
-    for(auto i=0; i<n; i++){
-        ll y;
-        cin>>y;
-        if(root <= y-1 && y-1 <= top){
-            top = y;
+    ll ans = 0;
+    for(auto i : arr){
+        if(i == 1){
+            if(ex > 0){
+                ex--;
+                ans++;
+            }
+            else if(exx){
+                exx = false;
+                ans++;
+            }
         }
+
         else{
-            root = y;
-            top = y;
-            res++;
+            ans += i;
+            if(i < 4) continue;
+
+            ex += 1 + (i-4)/2;
         }
     }
 
-    cout<<res<<endl;
+    if(ans < 3) ans = 0;
+    cout<<ans<<endl;
 }
 
 int main(){
