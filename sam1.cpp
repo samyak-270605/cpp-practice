@@ -1,33 +1,76 @@
-// 2228B
+// 2222B
 // Input:-
 
-// 4
-// 2 1 2 0
-// 4 3 2 1
-// 4 2 3 1
-// 16 8 4 2
+// 6
+// 7 4
+// 1 2 3 4 5 6 7
+// 1 2 3 4
+// 7 4
+// 1 -2 3 4 -5 -6 -7
+// 7 6 5 4
+// 7 5
+// 21 -45 234 -8 423 12 -987
+// 6 6 6 6 6
+// 7 5
+// -21 45 -234 8 -423 -12 987
+// 7 7 7 7 7
+// 7 3
+// -1 2 -3 4 5 6 7
+// 1 2 3
+// 7 3
+// -1 -2 -3 -4 -5 -6 -7
+// 1 2 3
 
 // Output:-
 
-// 1
-// 2
-// 2
 // 6
+// -20
+// -362
+// -637
+// 2
+// -25
 
 #include<bits/stdc++.h>     
 using namespace std;
 using ll = long long;
 
 void solve() {
-    int n, x1, x2, k;
-    cin>>n>>x1>>x2>>k;
-
-    if(n == 2 || n == 3){
-        cout<<1<<endl;
-        return;
+    ll n,m;
+    cin>>n>>m;
+    vector<ll> odd,even;
+    ll sum = 0;
+    for(auto i=1; i<=n; i++){
+        ll el;
+        cin>>el;
+        if(i%2 == 1) odd.push_back(el);
+        else even.push_back(el);
+        sum += el;
     }
-    int res = min(abs(x2-x1), n - abs(x2 - x1)) + k;
-    cout<<res<<endl;
+
+    sort(odd.begin(), odd.end());
+    sort(even.begin(), even.end());
+
+    ll o = (ll)odd.size() - 1;
+    ll e = (ll)even.size() - 1;
+
+    vector<ll> queries(m);
+    for(auto &x : queries) cin>>x;
+
+    for(auto q : queries){
+        // odd query
+        if(q % 2 == 1){
+            if(o < 0) continue;
+            if(odd[o] >= 0 || o == odd.size() - 1) sum -= odd[o--];
+        }
+        // even query
+        else{
+            if(e < 0) continue;
+            if(even[e] >= 0 || e == even.size() - 1) sum -= even[e--];
+        }
+    }
+
+    cout<<sum<<endl;
+
 }
 
 int main(){
