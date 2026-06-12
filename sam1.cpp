@@ -1,75 +1,63 @@
-// 2217B
 // Input:-
 
-// 4
-// 3 1
-// 0 1 0
-// 2
-// 5 1
-// 1 1 1 1 1
-// 1
-// 6 1
-// 0 1 0 1 0 1
-// 3
-// 17 1
-// 0 1 1 0 1 1 0 1 0 0 1 0 1 0 1 0 1
-// 5
+// 7
+// 1 2 3
+// 2 3 2
+// 7 3 10
+// 17 3 3
+// 10 10 2
+// 4 7 2
+// 1 6 2
 
 // Output:-
 
+// 1
+// 1
 // 2
+// 3
 // 0
-// 4
-// 10
+// 2
+// 2
 
 #include<bits/stdc++.h>     
 using namespace std;
 using ll = long long;
 
 void solve() {
-    int n,k;
-    cin>>n>>k;
-    vector<int> arr(n);
-    for(auto &x : arr) cin>>x;
-    int idx;
-    cin>>idx;
-    idx = idx-1;
-    int flip = 0;
-
-    int l = 0, r = n-1;
-    while(l <= idx || r >= idx){
-        while(l < idx && (((flip % 2 == 0) && arr[l] == arr[idx]) || 
-                ((flip % 2 == 1) && arr[l] != arr[idx]))) l++;
-        
-        while(r > idx && (((flip % 2 == 0) && arr[r] == arr[idx]) || 
-                ((flip % 2 == 1) && arr[r] != arr[idx]))) r--;
-
-        bool changed = false;
-        if(l < idx){
-            flip++;
-            changed = true;
-            l++;
-        }
-        else if(l == idx){
-            if(flip % 2 == 1){
-                flip++;
-                changed = true;
-            }
-            l++;
-        }
-
-        if(r > idx){
-            if(!changed) flip++;
-            r--;
-        }
-        else if(r == idx){
-            if(flip % 2 == 1){
-                if(!changed) flip++;
-            }
-            r--;
-        }
+    ll a,b,x;
+    cin>>a>>b>>x;
+    if(a == b){
+        cout<<0<<endl;
+        return;
     }
-    cout<<flip<<endl;
+
+    if(abs(a - b) == 1){
+        cout<<1<<endl;
+        return;
+    }
+
+    if(x > a && x > b){
+        cout<<2<<endl;
+        return;
+    }
+
+    int cnt = 0;
+    while(a != b){
+        ll mx = max(a,b);
+        ll mn = min(a,b);
+        if(mx - mn < x){
+            int diff = mx - mn;
+            int num = mx/x;
+            if(diff <= )
+        }
+
+        mx /= x;
+        a = max(mx,mn);
+        b = min(mx,mn);
+        cnt++;
+    }
+
+    cout<<cnt<<endl;
 }
 
 int main(){
